@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan Rina & Dimas</title>
+    
+    <!-- Bootstrap CSS (Untuk Tata Letak Responsif & Tombol) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Vintage & Estetik dari Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome (Untuk Ikon-Ikon Lucu) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- CSS / Desain Visual Kraft Vintage -->
+    <style>
+        :root {
+            --vintage-dark: #3E2723; /* Coklat espresso */
+            --vintage-bg: #DFCBB2;   /* Warna kertas kraft */
+            --vintage-cream: #FAF6F0;/* Putih gading */
+            --vintage-gold: #9C7A3C; /* Aksen emas */
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--vintage-bg);
+            background-image: url('https://www.transparenttextures.com/patterns/cardboard.png'); /* Tekstur kertas */
+            color: var(--vintage-dark);
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Tipografi */
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+        .font-hand {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.5rem;
+            color: var(--vintage-gold);
+        }
+
+        /* Pembatas Halaman */
+        .page-container {
+            max-width: 500px; /* Ukuran pas layar HP */
+            margin: 0 auto;
+            background-color: var(--vintage-cream);
+            box-shadow: 0 0 20px rgba(0,0,0,0.15);
+            min-height: 100vh;
+            position: relative;
+            border-left: 8px solid var(--vintage-gold);
+            border-right: 8px solid var(--vintage-gold);
+        }
+
+        section {
+            padding: 60px 25px;
+            text-align: center;
+            border-bottom: 2px dashed rgba(62, 39, 35, 0.15);
+        }
+
+        /* Sampul / Cover Terbuka */
+        #cover {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1080') no-repeat center center;
+            background-size: cover;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #cover h1, #cover p, #cover .font-hand {
+            color: white !important;
+            text-shadow: 1px 1px 10px rgba(0,0,0,0.7);
+        }
+
+        .btn-vintage {
+            background-color: var(--vintage-dark);
+            color: white;
+            border: 2px solid var(--vintage-gold);
+            border-radius: 30px;
+            padding: 10px 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-vintage:hover {
+            background-color: var(--vintage-gold);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* Frame Foto Lengkung */
+        .photo-arch {
+            width: 200px;
+            height: 280px;
+            border-radius: 100px 100px 0 0;
+            border: 5px solid var(--vintage-gold);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            object-fit: cover;
+            margin: 20px auto;
+        }
+
+        /* Countdown Timer */
+        .countdown-box {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
+        }
+        .time-card {
+            background-color: var(--vintage-dark);
+            color: var(--vintage-cream);
+            padding: 10px;
+            border-radius: 8px;
+            min-width: 70px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+        .time-card span {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        /* Pemutar Musik */
+        #music-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            background: var(--vintage-gold);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Tombol Musik Putar/Pause -->
+    <button id="music-button" onclick="togglePlay()"><i id="music-icon" class="fas fa-music"></i></button>
+    <audio id="bg-music" loop>
+        <!-- Ganti link .mp3 ini dengan musik favorit Anda -->
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="page-container">
+
+        <!-- 1. Halaman Cover -->
+        <div id="cover">
+            <p class="text-uppercase tracking-wider">Undangan Pernikahan</p>
+            <div class="font-hand">Rina & Dimas</div>
+            <p class="my-4">Yth. Bapak/Ibu/Saudara/i:</p>
+            <!-- Nama Tamu akan muncul otomatis di sini -->
+            <h3 id="guest-name" class="fw-bold mb-4">Nama Tamu</h3>
+            <button class="btn-vintage" onclick="bukaUndangan()"><i class="fas fa-envelope-open mr-2"></i> Buka Undangan</button>
+        </div>
+
+        <div id="konten-utama" style="display: none;">
+            
+            <!-- 2. Halaman Sambutan & Foto -->
+            <section>
+                <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=400" alt="Mempelai" class="photo-arch">
+                <p class="mt-4 italic">"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu merasa tenteram kepadanya..."</p>
+                <small class="text-muted">(QS. Ar-Rum: 21)</small>
+            </section>
+
+            <!-- 3. Mempelai Pria & Wanita -->
+            <section class="bg-light bg-opacity-50">
+                <p>Assalamu’alaikum Wr. Wb.</p>
+                <p>Dengan memohon ridho & rahmat-Nya, kami mengundang Anda untuk merayakan pernikahan kami:</p>
+                
+                <div class="my-4">
+                    <h2 class="font-hand">Rina Maharani, S.Pd.</h2>
+                    <p class="small text-muted mb-0">Putri pertama dari Bpk. Hendra Wijaya & Ibu Siti Aminah</p>
+                </div>
+                
+                <h3 class="font-hand my-2">&</h3>
+                
+                <div class="my-4">
+                    <h2 class="font-hand">Dimas Pratama, S.Kom.</h2>
+                    <p class="small text-muted mb-0">Putra kedua dari Bpk. Agus Santoso & Ibu Ratna Dewi</p>
+                </div>
+            </section>
+
+            <!-- 4. Waktu & Lokasi -->
+            <section>
+                <h3 class="fw-bold mb-4">Waktu & Lokasi Acara</h3>
+                
+                <div class="mb-4">
+                    <h5 class="fw-bold text-uppercase" style="color: var(--vintage-gold);">AKAD NIKAH</h5>
+                    <p class="mb-1"><i class="far fa-calendar-alt"></i> Minggu, 20 Desember 2026</p>
+                    <p><i class="far fa-clock"></i> Pukul 08.00 - 10.00 WIB</p>
+                </div>
+
+                <div class="mb-4">
+                    <h5 class="fw-bold text-uppercase" style="color: var(--vintage-gold);">RESEPSI</h5>
+                    <p class="mb-1"><i class="far fa-calendar-alt"></i> Minggu, 20 Desember 2026</p>
+                    <p><i class="far fa-clock"></i> Pukul 11.00 - 14.00 WIB</p>
+                </div>
+
+                <div class="card p-3 my-4 border-0 shadow-sm bg-white">
+                    <p class="fw-bold mb-1"><i class="fas fa-map-marker-alt"></i> Gedung Serbaguna Melati Indah</p>
+                    <p class="small text-muted">Jl. Raya Merdeka No. 45, Kota Bogor</p>
+                    <a href="https://maps.google.com" target="_blank" class="btn btn-vintage btn-sm"><i class="fas fa-map-marked-alt"></i> Lihat Rute Google Maps</a>
+                </div>
+
+                <!-- Hitung Mundur -->
+                <div class="countdown-box">
+                    <div class="time-card"><span id="days">00</span> Hari</div>
+                    <div class="time-card"><span id="hours">00</span> Jam</div>
+                    <div class="time-card"><span id="minutes">00</span> Menit</div>
+                    <div class="time-card"><span id="seconds">00</span> Detik</div>
+                </div>
+            </section>
+
+            <!-- 5. RSVP / Konfirmasi Kehadiran -->
+            <section class="bg-light bg-opacity-50">
+                <h3 class="fw-bold mb-3">Konfirmasi Kehadiran</h3>
+                <p class="small text-muted">Bantu kami mempersiapkan acara terbaik dengan mengonfirmasi kehadiran Anda:</p>
+                <a href="https://wa.me/628123456789?text=Halo%20Rina%20&%20Dimas,%20saya%20ingin%20mengonfirmasi%20kehadiran..." target="_blank" class="btn btn-vintage"><i class="fab fa-whatsapp"></i> Konfirmasi Kehadiran (WhatsApp)</a>
+            </section>
+
+            <!-- 6. Fitur Kado Digital -->
+            <section>
+                <h3 class="fw-bold mb-3">Kado Digital</h3>
+                <p class="small text-muted">Bagi Bapak/Ibu/Saudara/i yang ingin mengirimkan kado/tanda kasih dapat ditransfer ke rekening di bawah ini:</p>
+                
+                <div class="card p-4 border-0 shadow-sm my-3 bg-white text-start">
+                    <h5 class="fw-bold mb-1">BANK BCA</h5>
+                    <p class="mb-2">A/N: Rina Maharani</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="fw-bold" id="norek">1234-5678-90</span>
+                        <button class="btn btn-outline-dark btn-sm" onclick="salinNoRek('1234-5678-90')"><i class="far fa-copy"></i> Salin</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <section style="background-color: var(--vintage-dark); color: var(--vintage-cream);" class="border-0">
+                <p class="small mb-1">Terima kasih atas doa & kehadirannya</p>
+                <h4 class="font-hand" style="color: var(--vintage-gold); font-size: 2.5rem;">Rina & Dimas</h4>
+                <p class="mt-4" style="font-size: 0.7rem; opacity: 0.5;">Dibuat dengan ❤️ oleh YourTime PrintLab</p>
+            </section>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT / Fungsi Logika Website -->
+    <script>
+        // Membaca Nama Tamu dari URL (misal: linkundangan.com/?to=Nama+Tamu)
+        const params = new URLSearchParams(window.location.search);
+        const nameParam = params.get('to');
+        if (nameParam) {
+            document.getElementById('guest-name').innerText = decodeURIComponent(nameParam.replace(/\+/g, ' '));
+        } else {
+            document.getElementById('guest-name').innerText = "Tamu Kehormatan";
+        }
+
+        // Fungsi Buka Undangan (Menghilangkan cover, memutar musik)
+        function bukaUndangan() {
+            document.getElementById('cover').style.display = 'none';
+            document.getElementById('konten-utama').style.display = 'block';
+            window.scrollTo(0, 0);
+            
+            // Putar musik otomatis saat dibuka
+            document.getElementById('bg-music').play();
+            document.getElementById('music-icon').classList.add('fa-spin');
+        }
+
+        // Fungsi Putar & Jeda Musik
+        function togglePlay() {
+            const music = document.getElementById('bg-music');
+            const icon = document.getElementById('music-icon');
+            if (music.paused) {
+                music.play();
+                icon.classList.add('fa-spin');
+            } else {
+                music.pause();
+                icon.classList.remove('fa-spin');
+            }
+        }
+
+        // Hitung Mundur Waktu Pernikahan
+        const targetDate = new Date("December 20, 2026 08:00:00").getTime();
+        setInterval(function() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+        }, 1000);
+
+        // Fungsi Salin Rekening
+        function salinNoRek(norek) {
+            navigator.clipboard.writeText(norek);
+            alert("Nomor rekening berhasil disalin!");
+        }
+    </script>
+</body>
+</html>
