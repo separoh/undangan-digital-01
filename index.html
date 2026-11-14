@@ -3,317 +3,653 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Undangan Pernikahan Rina & Dimas</title>
+    <title>The Wedding of Rina & Dimas</title>
     
-    <!-- Bootstrap CSS (Untuk Tata Letak Responsif & Tombol) -->
+    <!-- Bootstrap & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Font Vintage & Estetik dari Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
-    
-    <!-- FontAwesome (Untuk Ikon-Ikon Lucu) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts Mewah -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
 
-    <!-- CSS / Desain Visual Kraft Vintage -->
     <style>
         :root {
-            --vintage-dark: #3E2723; /* Coklat espresso */
-            --vintage-bg: #DFCBB2;   /* Warna kertas kraft */
-            --vintage-cream: #FAF6F0;/* Putih gading */
-            --vintage-gold: #9C7A3C; /* Aksen emas */
+            --bg-outer: #2A1B12;
+            --kraft-base: #E8D7C3;
+            --ivory-card: #FCF9F4;
+            --espresso: #3B2316;
+            --gold-primary: #B08938;
+            --gold-light: #DFC078;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Quicksand', sans-serif;
-            background-color: var(--vintage-bg);
-            background-image: url('https://www.transparenttextures.com/patterns/cardboard.png'); /* Tekstur kertas */
-            color: var(--vintage-dark);
-            overflow-x: hidden;
             margin: 0;
             padding: 0;
+            background-color: var(--bg-outer);
+            font-family: 'Montserrat', sans-serif;
+            color: var(--espresso);
+            overflow: hidden; /* Mengunci scroll luar agar terasa seperti aplikasi */
         }
 
-        /* Tipografi */
-        h1, h2, h3 {
-            font-family: 'Playfair Display', serif;
-        }
-        .font-hand {
-            font-family: 'Great Vibes', cursive;
-            font-size: 3.5rem;
-            color: var(--vintage-gold);
-        }
-
-        /* Pembatas Halaman */
-        .page-container {
-            max-width: 500px; /* Ukuran pas layar HP */
+        /* Bingkai Utama Layar HP */
+        .app-shell {
+            max-width: 480px;
+            height: 100dvh;
             margin: 0 auto;
-            background-color: var(--vintage-cream);
-            box-shadow: 0 0 20px rgba(0,0,0,0.15);
-            min-height: 100vh;
             position: relative;
-            border-left: 8px solid var(--vintage-gold);
-            border-right: 8px solid var(--vintage-gold);
+            background-color: var(--kraft-base);
+            background-image: radial-gradient(rgba(176, 137, 56, 0.15) 1px, transparent 0),
+                              url('https://www.transparenttextures.com/patterns/cardboard.png');
+            background-size: 24px 24px, auto;
+            box-shadow: 0 0 40px rgba(0,0,0,0.6);
+            overflow: hidden;
         }
 
-        section {
-            padding: 60px 25px;
-            text-align: center;
-            border-bottom: 2px dashed rgba(62, 39, 35, 0.15);
+        /* Bingkai Garis Emas Ganda di Dalam Layar */
+        .luxury-frame {
+            position: absolute;
+            inset: 12px;
+            border: 1.5px solid var(--gold-primary);
+            pointer-events: none;
+            z-index: 20;
+        }
+        .luxury-frame::after {
+            content: "";
+            position: absolute;
+            inset: 4px;
+            border: 0.5px solid rgba(176, 137, 56, 0.5);
         }
 
-        /* Sampul / Cover Terbuka */
-        #cover {
+        /* Ornamen Sudut Bunga SVG */
+        .corner-ornament {
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            pointer-events: none;
+            z-index: 21;
+            opacity: 0.85;
+        }
+        .top-left { top: 8px; left: 8px; }
+        .top-right { top: 8px; right: 8px; transform: scaleX(-1); }
+        .bottom-left { bottom: 68px; left: 8px; transform: scaleY(-1); }
+        .bottom-right { bottom: 68px; right: 8px; transform: scale(-1, -1); }
+
+        /* Efek Kelopak Bunga & Cahaya Berterbangan */
+        #petals-container {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 15;
+            overflow: hidden;
+        }
+        .petal {
+            position: absolute;
+            top: -10%;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold-primary));
+            border-radius: 150% 0 150% 0;
+            opacity: 0.65;
+            animation: falling linear infinite;
+        }
+        @keyframes falling {
+            0% {
+                transform: translateY(0) rotate(0deg) translateX(0);
+                opacity: 0;
+            }
+            15% { opacity: 0.7; }
+            85% { opacity: 0.6; }
+            100% {
+                transform: translateY(110vh) rotate(360deg) translateX(40px);
+                opacity: 0;
+            }
+        }
+
+        /* ================= COVER SAMPUL DEPAN ================= */
+        #cover-screen {
+            position: absolute;
+            inset: 0;
+            z-index: 50;
+            background: linear-gradient(to bottom, rgba(35, 20, 12, 0.45), rgba(25, 14, 8, 0.85)),
+                        url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1080') center/cover no-repeat;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            height: 100vh;
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('Cover.jpg') no-repeat center center;
-            background-size: cover;
-            color: white;
-            padding: 20px;
             text-align: center;
+            padding: 60px 25px;
+            color: #FFFDF9;
+            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.8s ease;
+        }
+        #cover-screen.opened {
+            transform: translateY(-100%);
+            opacity: 0;
+            pointer-events: none;
         }
 
-        #cover h1, #cover p, #cover .font-hand {
-            color: white !important;
-            text-shadow: 1px 1px 10px rgba(0,0,0,0.7);
+        .font-script {
+            font-family: 'Great Vibes', cursive;
+            color: var(--gold-light);
+        }
+        .font-royal {
+            font-family: 'Cinzel', serif;
+            letter-spacing: 3px;
+        }
+        .font-serif-elegant {
+            font-family: 'Cormorant Garamond', serif;
         }
 
-        .btn-vintage {
-            background-color: var(--vintage-dark);
+        .guest-card {
+            background: rgba(252, 249, 244, 0.12);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(223, 192, 120, 0.5);
+            border-radius: 16px;
+            padding: 18px 25px;
+            width: 100%;
+            max-width: 340px;
+        }
+
+        .btn-royal {
+            background: linear-gradient(135deg, var(--gold-primary), #8E6B23);
             color: white;
-            border: 2px solid var(--vintage-gold);
-            border-radius: 30px;
-            padding: 10px 25px;
+            border: 1px solid var(--gold-light);
+            border-radius: 50px;
+            padding: 12px 30px;
+            font-size: 0.85rem;
             font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.35);
             transition: all 0.3s ease;
+            cursor: pointer;
         }
-        .btn-vintage:hover {
-            background-color: var(--vintage-gold);
+        .btn-royal:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 12px 25px rgba(176, 137, 56, 0.5);
             color: white;
-            transform: scale(1.05);
         }
 
-        /* Frame Foto Lengkung */
-        .photo-arch {
-            width: 200px;
-            height: 280px;
-            border-radius: 100px 100px 0 0;
-            border: 5px solid var(--vintage-gold);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        /* ================= HALAMAN MENU & EFEK TRANSISI ================= */
+        .tab-page {
+            position: absolute;
+            inset: 0;
+            padding: 45px 28px 95px 28px;
+            overflow-y: auto;
+            display: none;
+            text-align: center;
+            z-index: 10;
+        }
+        .tab-page.active {
+            display: block;
+            animation: pageEnter 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        @keyframes pageEnter {
+            0% {
+                opacity: 0;
+                transform: translateY(25px) scale(0.97);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Efek Muncul Bertahap untuk Elemen di Dalam Menu */
+        .tab-page.active .stagger-1 { animation: itemFadeUp 0.6s 0.1s both; }
+        .tab-page.active .stagger-2 { animation: itemFadeUp 0.6s 0.25s both; }
+        .tab-page.active .stagger-3 { animation: itemFadeUp 0.6s 0.4s both; }
+        .tab-page.active .stagger-4 { animation: itemFadeUp 0.6s 0.55s both; }
+
+        @keyframes itemFadeUp {
+            from { opacity: 0; transform: translateY(18px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Kartu Konten Mewah */
+        .luxury-card {
+            background: rgba(252, 249, 244, 0.88);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(176, 137, 56, 0.45);
+            border-radius: 18px;
+            padding: 22px 18px;
+            box-shadow: 0 8px 24px rgba(59, 35, 22, 0.08);
+            margin-bottom: 16px;
+        }
+
+        /* Bingkai Foto Profil Lengkung */
+        .arch-portrait {
+            width: 135px;
+            height: 175px;
+            border-radius: 80px 80px 12px 12px;
             object-fit: cover;
-            margin: 20px auto;
+            border: 3px solid var(--gold-primary);
+            padding: 3px;
+            background: white;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.15);
         }
 
-        /* Countdown Timer */
-        .countdown-box {
+        /* Grid Galeri Foto */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .gallery-item {
+            width: 100%;
+            height: 165px;
+            object-fit: cover;
+            border-radius: 14px;
+            border: 2px solid var(--gold-primary);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .gallery-item:hover {
+            transform: scale(1.04);
+        }
+
+        /* Countdown Mewah */
+        .countdown-wrap {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin: 25px 0;
+            gap: 10px;
+            margin: 15px 0;
         }
-        .time-card {
-            background-color: var(--vintage-dark);
-            color: var(--vintage-cream);
-            padding: 10px;
-            border-radius: 8px;
-            min-width: 70px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        .cd-box {
+            background: var(--espresso);
+            color: var(--gold-light);
+            border: 1px solid var(--gold-primary);
+            border-radius: 12px;
+            padding: 8px 10px;
+            min-width: 62px;
         }
-        .time-card span {
-            font-size: 1.5rem;
-            font-weight: bold;
+        .cd-box span {
             display: block;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: white;
+        }
+        .cd-box small {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* Pemutar Musik */
-        #music-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 100;
-            background: var(--vintage-gold);
-            color: white;
+        /* ================= MENU NAVIGASI BAWAH ================= */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 68px;
+            background: rgba(42, 27, 18, 0.96);
+            backdrop-filter: blur(10px);
+            border-top: 1.5px solid var(--gold-primary);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 30;
+            padding: 0 6px;
+        }
+        .nav-item-btn {
+            background: none;
             border: none;
+            color: rgba(252, 249, 244, 0.6);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.65rem;
+            gap: 4px;
+            padding: 6px 10px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .nav-item-btn i {
+            font-size: 1.1rem;
+        }
+        .nav-item-btn.active {
+            color: var(--gold-light);
+            background: rgba(176, 137, 56, 0.18);
+            transform: translateY(-3px);
+            font-weight: 600;
+        }
+
+        /* Tombol Musik Melayang */
+        #music-btn {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            z-index: 40;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            background: rgba(42, 27, 18, 0.85);
+            color: var(--gold-light);
+            border: 1px solid var(--gold-primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        /* Modal Preview Foto Galeri */
+        #photo-modal {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.88);
+            z-index: 60;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        #photo-modal img {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 14px;
+            border: 2px solid var(--gold-light);
         }
     </style>
 </head>
 <body>
 
-    <!-- Tombol Musik Putar/Pause -->
-    <button id="music-button" onclick="togglePlay()"><i id="music-icon" class="fas fa-music"></i></button>
+<div class="app-shell">
+    <!-- Bingkai Emas & Ornamen Sudut Bunga -->
+    <div class="luxury-frame"></div>
+    
+    <!-- SVG Bunga Sudut (Otomatis Muncul Tanpa Perlu Upload Gambar) -->
+    <svg class="corner-ornament top-left" viewBox="0 0 100 100" fill="none">
+        <path d="M5,5 Q45,5 65,25 Q40,35 25,65 Q5,45 5,5 Z" fill="#B08938" opacity="0.25"/>
+        <path d="M8,8 C35,8 55,20 75,5 M8,8 C8,35 20,55 5,75" stroke="#9C7A3C" stroke-width="1.5"/>
+        <circle cx="22" cy="22" r="6" fill="#B08938" opacity="0.6"/>
+        <circle cx="38" cy="14" r="4" fill="#9C7A3C" opacity="0.5"/>
+        <circle cx="14" cy="38" r="4" fill="#9C7A3C" opacity="0.5"/>
+    </svg>
+    <svg class="corner-ornament top-right" viewBox="0 0 100 100" fill="none">
+        <path d="M5,5 Q45,5 65,25 Q40,35 25,65 Q5,45 5,5 Z" fill="#B08938" opacity="0.25"/>
+        <path d="M8,8 C35,8 55,20 75,5 M8,8 C8,35 20,55 5,75" stroke="#9C7A3C" stroke-width="1.5"/>
+        <circle cx="22" cy="22" r="6" fill="#B08938" opacity="0.6"/>
+        <circle cx="38" cy="14" r="4" fill="#9C7A3C" opacity="0.5"/>
+        <circle cx="14" cy="38" r="4" fill="#9C7A3C" opacity="0.5"/>
+    </svg>
+    <svg class="corner-ornament bottom-left" viewBox="0 0 100 100" fill="none">
+        <path d="M5,5 Q45,5 65,25 Q40,35 25,65 Q5,45 5,5 Z" fill="#B08938" opacity="0.25"/>
+        <path d="M8,8 C35,8 55,20 75,5 M8,8 C8,35 20,55 5,75" stroke="#9C7A3C" stroke-width="1.5"/>
+        <circle cx="22" cy="22" r="6" fill="#B08938" opacity="0.6"/>
+    </svg>
+    <svg class="corner-ornament bottom-right" viewBox="0 0 100 100" fill="none">
+        <path d="M5,5 Q45,5 65,25 Q40,35 25,65 Q5,45 5,5 Z" fill="#B08938" opacity="0.25"/>
+        <path d="M8,8 C35,8 55,20 75,5 M8,8 C8,35 20,55 5,75" stroke="#9C7A3C" stroke-width="1.5"/>
+        <circle cx="22" cy="22" r="6" fill="#B08938" opacity="0.6"/>
+    </svg>
+
+    <!-- Kontainer Kelopak Berterbangan -->
+    <div id="petals-container"></div>
+
+    <!-- Tombol Musik & Audio -->
+    <button id="music-btn" onclick="toggleMusic()" title="Putar/Jeda Musik">
+        <i id="music-icon" class="fas fa-compact-disc"></i>
+    </button>
     <audio id="bg-music" loop>
-        <!-- Ganti link .mp3 ini dengan musik favorit Anda -->
         <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
     </audio>
 
-    <div class="page-container">
-
-        <!-- 1. Halaman Cover -->
-        <div id="cover">
-            <p class="text-uppercase tracking-wider">Undangan Pernikahan</p>
-            <div class="font-hand">Rina & Dimas</div>
-            <p class="my-4">Yth. Bapak/Ibu/Saudara/i:</p>
-            <!-- Nama Tamu akan muncul otomatis di sini -->
-            <h3 id="guest-name" class="fw-bold mb-4">Nama Tamu</h3>
-            <button class="btn-vintage" onclick="bukaUndangan()"><i class="fas fa-envelope-open mr-2"></i> Buka Undangan</button>
+    <!-- ================= 1. SAMPUL DEPAN (COVER) ================= -->
+    <div id="cover-screen">
+        <div class="mt-3">
+            <p class="font-royal small mb-2" style="color: var(--gold-light); font-size: 0.75rem;">THE WEDDING OF</p>
+            <h1 class="font-script" style="font-size: 3.8rem; line-height: 1.1;">Rina & Dimas</h1>
+            <p class="small opacity-75">Minggu, 20 Desember 2026</p>
         </div>
 
-        <div id="konten-utama" style="display: none;">
-            
-            <!-- 2. Halaman Sambutan & Foto -->
-            <section>
-                <img src="foto1.jpg" alt="Mempelai" class="photo-arch">
-                <p class="mt-4 italic">"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu merasa tenteram kepadanya..."</p>
-                <small class="text-muted">(QS. Ar-Rum: 21)</small>
-            </section>
-
-            <!-- 3. Mempelai Pria & Wanita -->
-            <section class="bg-light bg-opacity-50">
-                <p>Assalamu’alaikum Wr. Wb.</p>
-                <p>Dengan memohon ridho & rahmat-Nya, kami mengundang Anda untuk merayakan pernikahan kami:</p>
-                
-                <div class="my-4">
-                    <h2 class="font-hand">Rina Maharani, S.Pd.</h2>
-                    <p class="small text-muted mb-0">Putri pertama dari Bpk. Hendra Wijaya & Ibu Siti Aminah</p>
-                </div>
-                
-                <h3 class="font-hand my-2">&</h3>
-                
-                <div class="my-4">
-                    <h2 class="font-hand">Dimas Pratama, S.Kom.</h2>
-                    <p class="small text-muted mb-0">Putra kedua dari Bpk. Agus Santoso & Ibu Ratna Dewi</p>
-                </div>
-            </section>
-
-            <!-- 4. Waktu & Lokasi -->
-            <section>
-                <h3 class="fw-bold mb-4">Waktu & Lokasi Acara</h3>
-                
-                <div class="mb-4">
-                    <h5 class="fw-bold text-uppercase" style="color: var(--vintage-gold);">AKAD NIKAH</h5>
-                    <p class="mb-1"><i class="far fa-calendar-alt"></i> Minggu, 20 Desember 2026</p>
-                    <p><i class="far fa-clock"></i> Pukul 08.00 - 10.00 WIB</p>
-                </div>
-
-                <div class="mb-4">
-                    <h5 class="fw-bold text-uppercase" style="color: var(--vintage-gold);">RESEPSI</h5>
-                    <p class="mb-1"><i class="far fa-calendar-alt"></i> Minggu, 20 Desember 2026</p>
-                    <p><i class="far fa-clock"></i> Pukul 11.00 - 14.00 WIB</p>
-                </div>
-
-                <div class="card p-3 my-4 border-0 shadow-sm bg-white">
-                    <p class="fw-bold mb-1"><i class="fas fa-map-marker-alt"></i> Gedung Serbaguna Melati Indah</p>
-                    <p class="small text-muted">Jl. Raya Merdeka No. 45, Kota Bogor</p>
-                    <a href="https://maps.google.com" target="_blank" class="btn btn-vintage btn-sm"><i class="fas fa-map-marked-alt"></i> Lihat Rute Google Maps</a>
-                </div>
-
-                <!-- Hitung Mundur -->
-                <div class="countdown-box">
-                    <div class="time-card"><span id="days">00</span> Hari</div>
-                    <div class="time-card"><span id="hours">00</span> Jam</div>
-                    <div class="time-card"><span id="minutes">00</span> Menit</div>
-                    <div class="time-card"><span id="seconds">00</span> Detik</div>
-                </div>
-            </section>
-
-            <!-- 5. RSVP / Konfirmasi Kehadiran -->
-            <section class="bg-light bg-opacity-50">
-                <h3 class="fw-bold mb-3">Konfirmasi Kehadiran</h3>
-                <p class="small text-muted">Bantu kami mempersiapkan acara terbaik dengan mengonfirmasi kehadiran Anda:</p>
-                <a href="https://wa.me/628123456789?text=Halo%20Rina%20&%20Dimas,%20saya%20ingin%20mengonfirmasi%20kehadiran..." target="_blank" class="btn btn-vintage"><i class="fab fa-whatsapp"></i> Konfirmasi Kehadiran (WhatsApp)</a>
-            </section>
-
-            <!-- 6. Fitur Kado Digital -->
-            <section>
-                <h3 class="fw-bold mb-3">Kado Digital</h3>
-                <p class="small text-muted">Bagi Bapak/Ibu/Saudara/i yang ingin mengirimkan kado/tanda kasih dapat ditransfer ke rekening di bawah ini:</p>
-                
-                <div class="card p-4 border-0 shadow-sm my-3 bg-white text-start">
-                    <h5 class="fw-bold mb-1">BANK BCA</h5>
-                    <p class="mb-2">A/N: Rina Maharani</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="fw-bold" id="norek">1234-5678-90</span>
-                        <button class="btn btn-outline-dark btn-sm" onclick="salinNoRek('1234-5678-90')"><i class="far fa-copy"></i> Salin</button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Footer -->
-            <section style="background-color: var(--vintage-dark); color: var(--vintage-cream);" class="border-0">
-                <p class="small mb-1">Terima kasih atas doa & kehadirannya</p>
-                <h4 class="font-hand" style="color: var(--vintage-gold); font-size: 2.5rem;">Rina & Dimas</h4>
-                <p class="mt-4" style="font-size: 0.7rem; opacity: 0.5;">Dibuat dengan ❤️ oleh YourTime PrintLab</p>
-            </section>
+        <div class="guest-card">
+            <p class="small mb-1 opacity-75">Kepada Yth. Bapak/Ibu/Saudara/i:</p>
+            <h4 id="guest-name" class="font-serif-elegant fw-bold mb-3" style="color: var(--gold-light); font-size: 1.4rem;">Tamu Kehormatan</h4>
+            <button class="btn-royal" onclick="bukaUndangan()">
+                <i class="fas fa-envelope-open-text me-2"></i> Buka Undangan
+            </button>
         </div>
     </div>
 
-    <!-- JAVASCRIPT / Fungsi Logika Website -->
-    <script>
-        // Membaca Nama Tamu dari URL (misal: linkundangan.com/?to=Nama+Tamu)
-        const params = new URLSearchParams(window.location.search);
-        const nameParam = params.get('to');
-        if (nameParam) {
-            document.getElementById('guest-name').innerText = decodeURIComponent(nameParam.replace(/\+/g, ' '));
+    <!-- ================= MENU 1: PEMBUKA & AYAT ================= -->
+    <div id="tab-home" class="tab-page active">
+        <p class="font-royal small stagger-1" style="color: var(--gold-primary); font-size: 0.7rem;">WALIMATUL URS</p>
+        <h2 class="font-script stagger-1" style="font-size: 3rem; color: var(--espresso);">Rina & Dimas</h2>
+        
+        <div class="my-3 stagger-2">
+            <!-- Ganti src dengan 'cover.jpg' jika sudah upload foto sendiri -->
+            <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=500" alt="Pasangan" class="arch-portrait" style="width: 170px; height: 220px;">
+        </div>
+
+        <div class="luxury-card stagger-3">
+            <p class="font-serif-elegant fst-italic mb-2" style="font-size: 1.05rem;">
+                "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu merasa tenteram kepadanya..."
+            </p>
+            <small class="fw-bold" style="color: var(--gold-primary);">— QS. Ar-Rum: 21 —</small>
+        </div>
+
+        <div class="countdown-wrap stagger-4">
+            <div class="cd-box"><span id="days">00</span><small>Hari</small></div>
+            <div class="cd-box"><span id="hours">00</span><small>Jam</small></div>
+            <div class="cd-box"><span id="minutes">00</span><small>Menit</small></div>
+            <div class="cd-box"><span id="seconds">00</span><small>Detik</small></div>
+        </div>
+    </div>
+
+    <!-- ================= MENU 2: PROFIL MEMPELAI ================= -->
+    <div id="tab-couple" class="tab-page">
+        <p class="font-royal small stagger-1" style="color: var(--gold-primary); font-size: 0.7rem;">MEMPELAI BERBAHAGIA</p>
+        <p class="small text-muted mb-3 stagger-1">Assalamu’alaikum Warahmatullahi Wabarakatuh</p>
+
+        <!-- Mempelai Wanita -->
+        <div class="luxury-card stagger-2">
+            <!-- Ganti src dengan 'wanita.jpg' -->
+            <img src="https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?q=80&w=400" alt="Mempelai Wanita" class="arch-portrait mb-2">
+            <h3 class="font-script mb-0" style="font-size: 2.3rem; color: var(--gold-primary);">Rina Maharani, S.Pd.</h3>
+            <p class="small text-muted mb-0">Putri pertama dari:<br><strong>Bpk. Hendra Wijaya & Ibu Siti Aminah</strong></p>
+        </div>
+
+        <div class="font-script my-1 stagger-3" style="font-size: 2rem; color: var(--espresso);">&</div>
+
+        <!-- Mempelai Pria -->
+        <div class="luxury-card stagger-4">
+            <!-- Ganti src dengan 'pria.jpg' -->
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400" alt="Mempelai Pria" class="arch-portrait mb-2">
+            <h3 class="font-script mb-0" style="font-size: 2.3rem; color: var(--gold-primary);">Dimas Pratama, S.Kom.</h3>
+            <p class="small text-muted mb-0">Putra kedua dari:<br><strong>Bpk. Agus Santoso & Ibu Ratna Dewi</strong></p>
+        </div>
+    </div>
+
+    <!-- ================= MENU 3: JADWAL & LOKASI ================= -->
+    <div id="tab-event" class="tab-page">
+        <p class="font-royal small stagger-1" style="color: var(--gold-primary); font-size: 0.7rem;">RANGKAIAN ACARA</p>
+        <h2 class="font-serif-elegant fw-bold mb-3 stagger-1">Waktu & Tempat</h2>
+
+        <div class="luxury-card stagger-2">
+            <i class="fas fa-ring mb-2" style="color: var(--gold-primary); font-size: 1.4rem;"></i>
+            <h5 class="font-royal fw-bold" style="font-size: 0.95rem;">AKAD NIKAH</h5>
+            <p class="mb-1 fw-semibold">Minggu, 20 Desember 2026</p>
+            <p class="small text-muted mb-0">Pukul 08.00 – 10.00 WIB</p>
+        </div>
+
+        <div class="luxury-card stagger-3">
+            <i class="fas fa-glass-cheers mb-2" style="color: var(--gold-primary); font-size: 1.4rem;"></i>
+            <h5 class="font-royal fw-bold" style="font-size: 0.95rem;">RESEPSI PERNIKAHAN</h5>
+            <p class="mb-1 fw-semibold">Minggu, 20 Desember 2026</p>
+            <p class="small text-muted mb-0">Pukul 11.00 – 14.00 WIB</p>
+        </div>
+
+        <div class="luxury-card stagger-4">
+            <i class="fas fa-map-marker-alt mb-2" style="color: var(--gold-primary); font-size: 1.4rem;"></i>
+            <h6 class="fw-bold mb-1">Gedung Serbaguna Melati Indah</h6>
+            <p class="small text-muted mb-3">Jl. Raya Merdeka No. 45, Kota Bogor</p>
+            <a href="https://maps.google.com" target="_blank" class="btn-royal btn-sm text-decoration-none d-inline-block">
+                <i class="fas fa-location-arrow me-1"></i> Buka Google Maps
+            </a>
+        </div>
+    </div>
+
+    <!-- ================= MENU 4: GALERI FOTO ================= -->
+    <div id="tab-gallery" class="tab-page">
+        <p class="font-royal small stagger-1" style="color: var(--gold-primary); font-size: 0.7rem;">MOMEN BAHAGIA</p>
+        <h2 class="font-serif-elegant fw-bold mb-3 stagger-1">Galeri Prewedding</h2>
+        <p class="small text-muted mb-3 stagger-1">Ketuk foto untuk memperbesar tampilan</p>
+
+        <div class="gallery-grid stagger-2">
+            <!-- Ganti ke-4 src ini dengan galeri1.jpg, galeri2.jpg, galeri3.jpg, galeri4.jpg -->
+            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=500" class="gallery-item" onclick="zoomFoto(this.src)">
+            <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=500" class="gallery-item" onclick="zoomFoto(this.src)">
+            <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=500" class="gallery-item" onclick="zoomFoto(this.src)">
+            <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=500" class="gallery-item" onclick="zoomFoto(this.src)">
+        </div>
+    </div>
+
+    <!-- ================= MENU 5: KADO DIGITAL & RSVP ================= -->
+    <div id="tab-gift" class="tab-page">
+        <p class="font-royal small stagger-1" style="color: var(--gold-primary); font-size: 0.7rem;">TANDA KASIH & DOA</p>
+        <h2 class="font-serif-elegant fw-bold mb-3 stagger-1">Kado Digital & RSVP</h2>
+
+        <div class="luxury-card text-start stagger-2">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-dark">BANK BCA</span>
+                <i class="fas fa-credit-card" style="color: var(--gold-primary);"></i>
+            </div>
+            <p class="small text-muted mb-1">Atas Nama: <strong>Rina Maharani</strong></p>
+            <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top">
+                <span class="fw-bold fs-6">1234567890</span>
+                <button class="btn btn-sm btn-outline-dark rounded-pill" onclick="salinRek('1234567890')">
+                    <i class="far fa-copy me-1"></i> Salin
+                </button>
+            </div>
+        </div>
+
+        <div class="luxury-card stagger-3">
+            <h6 class="fw-bold mb-2">Konfirmasi Kehadiran</h6>
+            <p class="small text-muted mb-3">Kirimkan doa restu dan konfirmasi kehadiran Anda melalui WhatsApp:</p>
+            <a href="https://wa.me/628123456789?text=Halo%20Rina%20%26%20Dimas,%20selamat%20menempuh%20hidup%20baru!%20Saya%20konfirmasi%20akan%20hadir." target="_blank" class="btn-royal text-decoration-none d-inline-block">
+                <i class="fab fa-whatsapp me-1"></i> Kirim Ucapan & RSVP
+            </a>
+        </div>
+
+        <p class="small text-muted mt-4 stagger-4" style="font-size: 0.7rem;">
+            Undangan Digital oleh <strong>YourTime PrintLab</strong>
+        </p>
+    </div>
+
+    <!-- ================= BAR MENU NAVIGASI BAWAH ================= -->
+    <nav class="bottom-nav">
+        <button class="nav-item-btn active" onclick="gantiMenu('tab-home', this)">
+            <i class="fas fa-home"></i><span>Sampul</span>
+        </button>
+        <button class="nav-item-btn" onclick="gantiMenu('tab-couple', this)">
+            <i class="fas fa-heart"></i><span>Mempelai</span>
+        </button>
+        <button class="nav-item-btn" onclick="gantiMenu('tab-event', this)">
+            <i class="fas fa-calendar-check"></i><span>Acara</span>
+        </button>
+        <button class="nav-item-btn" onclick="gantiMenu('tab-gallery', this)">
+            <i class="fas fa-images"></i><span>Galeri</span>
+        </button>
+        <button class="nav-item-btn" onclick="gantiMenu('tab-gift', this)">
+            <i class="fas fa-gift"></i><span>Kado</span>
+        </button>
+    </nav>
+
+    <!-- Popup Zoom Galeri -->
+    <div id="photo-modal" onclick="this.style.display='none'">
+        <img id="modal-img" src="" alt="Preview">
+    </div>
+</div>
+
+<script>
+    // 1. Baca Nama Tamu dari Link (?to=Nama+Tamu)
+    const urlParams = new URLSearchParams(window.location.search);
+    const tamu = urlParams.get('to');
+    if (tamu) {
+        document.getElementById('guest-name').innerText = decodeURIComponent(tamu.replace(/\+/g, ' '));
+    }
+
+    // 2. Buka Undangan & Putar Musik
+    function bukaUndangan() {
+        document.getElementById('cover-screen').classList.add('opened');
+        const audio = document.getElementById('bg-music');
+        audio.play().catch(() => {});
+        document.getElementById('music-icon').classList.add('fa-spin');
+        mulaiKelopakBunga();
+    }
+
+    // 3. Kontrol Musik
+    function toggleMusic() {
+        const audio = document.getElementById('bg-music');
+        const icon = document.getElementById('music-icon');
+        if (audio.paused) {
+            audio.play();
+            icon.classList.add('fa-spin');
         } else {
-            document.getElementById('guest-name').innerText = "Tamu Kehormatan";
+            audio.pause();
+            icon.classList.remove('fa-spin');
         }
+    }
 
-        // Fungsi Buka Undangan (Menghilangkan cover, memutar musik)
-        function bukaUndangan() {
-            document.getElementById('cover').style.display = 'none';
-            document.getElementById('konten-utama').style.display = 'block';
-            window.scrollTo(0, 0);
-            
-            // Putar musik otomatis saat dibuka
-            document.getElementById('bg-music').play();
-            document.getElementById('music-icon').classList.add('fa-spin');
+    // 4. Ganti Halaman Menu dengan Efek Animasi
+    function gantiMenu(tabId, btnElement) {
+        // Sembunyikan semua halaman
+        document.querySelectorAll('.tab-page').forEach(page => {
+            page.classList.remove('active');
+        });
+        // Matikan status aktif di semua tombol bawah
+        document.querySelectorAll('.nav-item-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        // Munculkan halaman yang dipilih
+        const targetPage = document.getElementById(tabId);
+        targetPage.classList.add('active');
+        targetPage.scrollTop = 0;
+        btnElement.classList.add('active');
+    }
+
+    // 5. Efek Kelopak Bunga Emas Berterbangan
+    function mulaiKelopakBunga() {
+        const container = document.getElementById('petals-container');
+        for (let i = 0; i < 18; i++) {
+            const petal = document.createElement('div');
+            petal.classList.add('petal');
+            const size = Math.random() * 10 + 7;
+            petal.style.width = size + 'px';
+            petal.style.height = size + 'px';
+            petal.style.left = Math.random() * 100 + '%';
+            petal.style.animationDuration = (Math.random() * 6 + 6) + 's';
+            petal.style.animationDelay = (Math.random() * 5) + 's';
+            container.appendChild(petal);
         }
+    }
 
-        // Fungsi Putar & Jeda Musik
-        function togglePlay() {
-            const music = document.getElementById('bg-music');
-            const icon = document.getElementById('music-icon');
-            if (music.paused) {
-                music.play();
-                icon.classList.add('fa-spin');
-            } else {
-                music.pause();
-                icon.classList.remove('fa-spin');
-            }
+    // 6. Hitung Mundur Acara
+    const tglAcara = new Date("December 20, 2026 08:00:00").getTime();
+    setInterval(() => {
+        const selisih = tglAcara - new Date().getTime();
+        if (selisih > 0) {
+            document.getElementById('days').innerText = String(Math.floor(selisih / (1000 * 60 * 60 * 24))).padStart(2, '0');
+            document.getElementById('hours').innerText = String(Math.floor((selisih / (1000 * 60 * 60)) % 24)).padStart(2, '0');
+            document.getElementById('minutes').innerText = String(Math.floor((selisih / 1000 / 60) % 60)).padStart(2, '0');
+            document.getElementById('seconds').innerText = String(Math.floor((selisih / 1000) % 60)).padStart(2, '0');
         }
+    }, 1000);
 
-        // Hitung Mundur Waktu Pernikahan
-        const targetDate = new Date("December 20, 2026 08:00:00").getTime();
-        setInterval(function() {
-            const now = new Date().getTime();
-            const distance = targetDate - now;
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
-            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
-            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
-            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
-        }, 1000);
-
-        // Fungsi Salin Rekening
-        function salinNoRek(norek) {
-            navigator.clipboard.writeText(norek);
-            alert("Nomor rekening berhasil disalin!");
-        }
-    </script>
+    // 7. Zoom Galeri & Salin Rekening
+    function zoomFoto(src) {
+        document.getElementById('modal-img').src = src;
+        document.getElementById('photo-modal').style.display = 'flex';
+    }
+    function salinRek(nomor) {
+        navigator.clipboard.writeText(nomor);
+        alert("Nomor rekening " + nomor + " berhasil disalin!");
+    }
+</script>
 </body>
 </html>
